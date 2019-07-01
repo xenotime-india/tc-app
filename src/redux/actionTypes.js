@@ -1,0 +1,17 @@
+export const PROFILE = {
+  LOGIN_STARTED: 'PROFILE:LOGIN_STARTED',
+  LOGIN_SUCCESS: 'PROFILE:LOGIN_SUCCESS',
+  LOGIN_ERROR: 'PROFILE:LOGIN_ERROR',
+  LOGOUT_STARTED: 'PROFILE:LOGOUT_STARTED',
+  LOGOUT_SUCCESS: 'PROFILE:LOGOUT_SUCCESS',
+  LOGOUT_ERROR: 'PROFILE:LOGOUT_ERROR',
+};
+
+export const actionTypes = prefix => {
+  return {
+    BEGIN: `${prefix}_BEGIN`,
+    SUCCESS: `${prefix}_SUCCESS`,
+    ERROR: `${prefix}_ERROR`,
+    prefix,
+  };
+};

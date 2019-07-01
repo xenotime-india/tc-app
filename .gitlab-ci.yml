@@ -1,0 +1,82 @@
+image: node:10
+
+stages:
+  - build
+
+package-develop:
+  type: build
+  only:
+    - dev
+  environment:
+    name: dev/package
+  before_script:
+    - echo "${JS_CONFIG_ENV_DEV}" > ./.env
+    - echo fs.inotify.max_user_instances=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_queued_events=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - yarn global add expo-cli@2.19.5
+    - mkdir binaries
+    - expo login -u ${EXPO_USERNAME} -p ${EXPO_PASSWORD}
+  script:
+    - yarn install
+    - expo publish --non-interactive --release-channel dev
+
+package-qa:
+  type: build
+  only:
+    - dev
+  environment:
+    name: qa/package
+    url: https://gitlab.com/xenotime/aolf-tp-mobile-app/-/jobs/artifacts/dev/browse/binaries?job=package-qa
+  before_script:
+    - echo "${JS_CONFIG_ENV_QA}" > ./.env
+    - echo fs.inotify.max_user_instances=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_queued_events=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - yarn global add expo-cli@2.19.5
+    - mkdir binaries
+    - expo login -u ${EXPO_USERNAME} -p ${EXPO_PASSWORD}
+  script:
+    - yarn install
+    - expo publish --non-interactive --release-channel qa
+    - expo build:android --non-interactive --no-publish --release-channel qa
+    - curl -o binaries/divdot-qa-${CI_COMMIT_SHA}.apk "$(expo url:apk --non-interactive)"
+    - ./ci_scripts/wait.sh binaries/divdot-qa-${CI_COMMIT_SHA}.apk ${HOCKEY_APP_TOKEN} ${QA_ANDROID_APP_ID}
+    - expo build:ios --non-interactive --no-publish --release-channel qa
+    - curl -o binaries/divdot-qa-${CI_COMMIT_SHA}.ipa "$(expo url:ipa --non-interactive)"
+    - ./ci_scripts/wait.sh binaries/divdot-qa-${CI_COMMIT_SHA}.ipa ${HOCKEY_APP_TOKEN} ${QA_IOS_APP_ID}
+  artifacts:
+    name: 'mobile-qa-${CI_COMMIT_SHA}'
+    when: on_success
+    paths:
+      - binaries
+
+package-production:
+  type: build
+  only:
+    - master
+  environment:
+    name: production/package
+    url: https://gitlab.com/xenotime/aolf-tp-mobile-app/-/jobs/artifacts/master/browse/binaries?job=package-production
+  before_script:
+    - echo "${JS_CONFIG_ENV_PROD}" > ./.env
+    - echo fs.inotify.max_user_instances=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - echo fs.inotify.max_queued_events=524288 | tee -a /etc/sysctl.conf && sysctl -p
+    - yarn global add expo-cli@2.19.5
+    - mkdir binaries
+    - expo login -u ${EXPO_USERNAME} -p ${EXPO_PASSWORD}
+  script:
+    - yarn install
+    - expo publish --non-interactive --release-channel production
+    - expo build:android --non-interactive --no-publish --release-channel production
+    - curl -o binaries/divdot-production-${CI_COMMIT_SHA}.apk "$(expo url:apk --non-interactive)"
+    - ./ci_scripts/wait.sh binaries/divdot-qa-${CI_COMMIT_SHA}.apk ${HOCKEY_APP_TOKEN} ${PROD_ANDROID_APP_ID}
+    - expo build:ios --non-interactive --no-publish --release-channel production
+    - curl -o binaries/divdot-production-${CI_COMMIT_SHA}.ipa "$(expo url:ipa --non-interactive)"
+    - ./ci_scripts/wait.sh binaries/divdot-qa-${CI_COMMIT_SHA}.ipa ${HOCKEY_APP_TOKEN} ${PROD_IOS_APP_ID}
+  artifacts:
+    name: 'mobile-production-${CI_COMMIT_SHA}'
+    when: on_success
+    paths:
+      - binaries

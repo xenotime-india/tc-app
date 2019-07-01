@@ -1,0 +1,17 @@
+{
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#2ab72c",
+    "statusBar.foreground": "#FFFFFF",
+    "titleBar.activeBackground": "#2ab72c",
+    "titleBar.inactiveBackground": "#FF2C70CC"
+  },
+  "terminal.integrated.env.osx": {
+    "SFDX_SET_CLIENT_IDS": "sfdx-vscode"
+  },
+  "terminal.integrated.env.linux": {
+    "SFDX_SET_CLIENT_IDS": "sfdx-vscode"
+  },
+  "terminal.integrated.env.windows": {
+    "SFDX_SET_CLIENT_IDS": "sfdx-vscode"
+  }
+}

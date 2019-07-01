@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "AOL Journey: Teacher App",
+    "description": "An teacher mobile app for art of living.",
+    "slug": "aolf-teacher-app",
+    "privacy": "unlisted",
+    "sdkVersion": "33.0.0",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#ef8157",
+    "icon": "./assets/images/icon/icon.png",
+    "splash": {
+      "image": "./assets/images/splash/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#bfbfbf"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.artofliving.teacher.app"
+    },
+    "android": {
+      "package": "com.artofliving.teacher.app"
+    },
+    "androidStatusBar": {
+      "translucent": true
+    }
+  }
+}
