@@ -27,9 +27,9 @@ jobs:
       install:
         - yarn global add expo-cli
       script:
-        - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD --non-interactive --release-channel qa
+        - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD --non-interactive
         - yarn
-        - expo publish
+        - expo publish --non-interactive --release-channel qa
     - stage: build standalone apps
       env:
         - CACHE_NAME=build-android-v2 YARN_CACHE_FOLDER="/home/travis/yarn_cache"
