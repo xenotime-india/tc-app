@@ -27,7 +27,7 @@ jobs:
       install:
         - yarn global add expo-cli
       script:
-        - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD --non-interactive
+        - expo login -u $EXPO_USERNAME -p $EXPO_PASSWORD --non-interactive --release-channel qa
         - yarn
         - expo publish
     - stage: build standalone apps
