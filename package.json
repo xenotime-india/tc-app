@@ -25,7 +25,7 @@
     "expo-permissions": "^5.0.1",
     "formik": "^1.5.7",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "query-string": "^6.5.0",
